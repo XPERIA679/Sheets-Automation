@@ -28,6 +28,10 @@ function duplicateAndClearSheet() {
     var rangeToClear = mainSheet.getRange("D12:G20");
     rangeToClear.clearContent();
 
+    var nextDay = new Date(today);
+    nextDay.setDate(nextDay.getDate() + 1);  
+    mainSheet.getRange("B1").setValue(nextDay);
+
     Logger.log("Sheet duplicated, renamed to " + formattedDate + ", and cells D12:G20 cleared.");
 
     let reporterToday = newSheet.getRange("B3").getValue();
