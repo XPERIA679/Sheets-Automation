@@ -29,4 +29,23 @@ function duplicateAndClearSheet() {
     rangeToClear.clearContent();
 
     Logger.log("Sheet duplicated, renamed to " + formattedDate + ", and cells D12:G20 cleared.");
+
+    let reporterToday = newSheet.getRange("B3").getValue();
+    newSheet.getRange("B3").setValue(reporterToday);
+
+    let scratchSheet = ss.getSheetByName("Weekly Report");
+    if (!scratchSheet) {
+      Logger.log("Weekly Report sheet not found!");
+      return;
+    }
+
+    let counter = scratchSheet.getRange("B4").getValue();
+    if (typeof counter === 'number') {
+        let incrementedCounter = counter + 1;
+        scratchSheet.getRange("B4").setValue(incrementedCounter);
+        let reporterTomorrow = mainSheet.getRange("B3").getValue();
+        Logger.log("The reporter tomorrow is: " + reporterTomorrow);
+    } else {
+        Logger.log("Counter is not a number!");
+    }   
 }
