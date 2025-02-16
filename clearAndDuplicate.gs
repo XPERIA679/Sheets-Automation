@@ -37,16 +37,16 @@ function duplicateAndClearSheet() {
     let reporterToday = newSheet.getRange("B3").getValue();
     newSheet.getRange("B3").setValue(reporterToday);
 
-    let scratchSheet = ss.getSheetByName("Weekly Report");
+    let scratchSheet = ss.getSheetByName("Reporter Data");
     if (!scratchSheet) {
-      Logger.log("Weekly Report sheet not found!");
+      Logger.log("Reporter Data sheet not found!");
       return;
     }
 
-    let counter = scratchSheet.getRange("B4").getValue();
+    let counter = scratchSheet.getRange("B1").getValue();
     if (typeof counter === 'number') {
         let incrementedCounter = counter + 1;
-        scratchSheet.getRange("B4").setValue(incrementedCounter);
+        scratchSheet.getRange("B1").setValue(incrementedCounter);
         let reporterTomorrow = mainSheet.getRange("B3").getValue();
         Logger.log("The reporter tomorrow is: " + reporterTomorrow);
     } else {
