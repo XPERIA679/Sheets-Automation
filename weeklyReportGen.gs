@@ -10,10 +10,10 @@ function generateAndSendWeeklyReport() {
   reportSheet.clear();
 
   var today = new Date();
-  if (today.getDay() !== 5) { // Run only on Fridays
-    Logger.log("Not Friday. Skipping report generation.");
-    return;
-  }
+  // if (today.getDay() !== 5) { // Run only on Fridays
+  //   Logger.log("Not Friday. Skipping report generation.");
+  //   return;
+  // }
 
   var startDate = new Date(today);
   startDate.setDate(today.getDate() - 4);
@@ -29,12 +29,18 @@ function generateAndSendWeeklyReport() {
     }
 
     if (dailySheet) {
-      var data = dailySheet.getRange("D12:D20").getValues();
-      rawReport += data.map(row => row.join("\t")).join("\n") + "\n";
+      var data = dailySheet.getRange("D12:E20").getValues();
+
+      data.forEach((row) => {
+        var myTask = row[0];         // Column D (your tasks)
+        var teammateTask = row[1];   // Column E (teammate's tasks)
+
+        if (myTask) rawReport += `You: ${myTask}\n`;
+        if (teammateTask) rawReport += `Teammate: ${teammateTask}\n`;
+      });
     } else {
       Logger.log("No data found for " + (i === 4 ? "Daily Report (Friday)" : dateStr));
     }
-
     startDate.setDate(startDate.getDate() + 1);
   }
 
@@ -51,7 +57,7 @@ function generateAndSendWeeklyReport() {
 
   var url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=" + apiKey;
 
-  var prompt = "Format the following weekly report into a bulleted list of unique tasks only, with no time or status details:\n\n" + rawReport + "\n\nPlease remove any duplicate tasks.";
+  var prompt = "Format the following weekly report into a bulleted list of unique tasks only, the first row is my tasks and the second row is a teammates tasl, separate it, with no time or status details:\n\n" + rawReport + "\n\nPlease remove any duplicate tasks.";
 
   var payload = JSON.stringify({
     "contents": [{ "parts": [{ "text": prompt }] }]

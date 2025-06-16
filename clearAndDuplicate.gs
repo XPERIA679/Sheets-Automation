@@ -14,7 +14,7 @@ function duplicateAndClearSheet() {
       return;
     }
 
-    today.setDate(today.getDate());
+    today.setDate(today.getDate() - 1);
     var formattedDate = Utilities.formatDate(today, Session.getScriptTimeZone(), "dd/MM/yyyy");
 
     var newSheet = mainSheet.copyTo(ss);
